@@ -1,0 +1,12 @@
+upstream test {
+    server 172.18.0.4 weight=6;
+    server 172.18.0.5 weight=4;
+}
+
+server {
+    listen 80;
+    server_name 172.18.0.2;  #container ip
+    location / {
+        proxy_pass http://test;
+    }
+}

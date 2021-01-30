@@ -1,0 +1,42 @@
+docker network create --subnet=172.18.0.0/24 test-network
+
+cd base
+docker build -t nginx_base .
+cd ..
+cd master
+docker build -t nginx_master .
+cd ..
+cd slave
+docker build -t nginx_slave .
+cd ..
+cd web
+docker build -t nginx_web .
+cd ..
+docker run -d \
+    -p 8880:80 -p 8022:22 \
+    --name nginx_master \
+    --privileged \
+    --net test-network \
+    nginx_master
+docker run -d \
+    -p 8881:80 -p 8023:22 \
+    --name nginx_slave \
+    --privileged \
+    --net test-network \
+    nginx_slave
+
+docker run -d \
+    -p 8882:80 -p 8024:22 \
+    --privileged \
+    --name web1 \
+    --net test-network \
+    -e "name=WEB1" \
+    nginx_web
+
+docker run -d \
+    -p 8883:80 -p 8025:22 \
+    --privileged \
+    --name web2 \
+    --net test-network \
+    -e "name=WEB2" \
+    nginx_web

@@ -1,7 +1,7 @@
 # docker-nginx-backup-server-and-loadblance
 
 # 版本
-Host主機作業系統: Ubuntu 20.04.3 LTS<br>
+Host主機作業系統: Ubuntu 20.04 LTS<br>
 Docker: Docker version 19.03.8<br>
 Container作業系統: Ubuntu 18.04.3 LTS<br>
 
@@ -10,19 +10,15 @@ Container作業系統: Ubuntu 18.04.3 LTS<br>
 
 # 使用的工具和設備的資料
 利用Nginx+keepalived實作一台主server，一個備用server和load blancer<br><br>
-假設Host主機IP為140.0.0.1<br>
-Host Server IP: 140.0.0.1<br>
-虛擬IP: 172.18.0.15（希望改用實體IP）<br>
-主Server IP: 140.0.0.1:8880 對應container 172.18.0.2:80<br>
-備用Server IP: 140.0.0.1:8881 對應container 172.18.0.3:80<br>
-Web1 Server IP: 140.0.0.1:8882 對應container 172.18.0.4:80<br>
-Web2 Server IP: 140.0.0.1:8883 對應container 172.18.0.5:80<br>
+假設Host主機IP為10.0.2.15<br>
+Host Server IP: 10.0.2.15<br>
+虛擬IP: 10.0.2.15（希望改用實體IP）<br>
+主Server IP: 10.0.2.15:8080<br>
+備用Server IP: 10.0.2.15:8081<br>
+Web1 Server IP: 10.0.2.15:8880 對應container 172.18.0.2:80<br>
+Web2 Server IP: 10.0.2.15:8881 對應container 172.18.0.3:80<br>
 
-**問題**：目前遇到的問題是想要在keepalived的虛擬IP改用為140.0.0.1實體，這樣可以讓使用者連進來，目前不知道實體IP是否能取代虛擬IP？
-<br><br>
-
-## 創建VIP的keepalived架構圖
-<img src="image/nginx-back-server-and-loadblance-vip.png" width="100%">
+**問題**：目前遇到的問題是想要在keepalived的虛擬IP改用為10.0.2.15實體，這樣可以讓使用者連進來，目前不知道實體IP是否能取代虛擬IP？
 <br><br>
 
 ## 使用VM實體IP當作keepalived的虛擬IP

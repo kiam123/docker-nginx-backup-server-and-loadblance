@@ -10,15 +10,15 @@ Container作業系統: Ubuntu 18.04.3 LTS<br>
 
 # 使用的工具和設備的資料
 利用Nginx+keepalived實作一台主server，一個備用server和load blancer<br><br>
-假設Host主機IP為10.0.2.15<br>
-Host Server IP: 10.0.2.15<br>
-虛擬IP: 10.0.2.15（希望改用實體IP）<br>
+假設VM (Virtual box) 主機IP為10.0.2.15<br>
+VM Server IP: 10.0.2.15<br>
+虛擬IP: 10.0.2.15（虛擬IP 用VM IP）<br>
 主Server IP: 10.0.2.15:8080<br>
 備用Server IP: 10.0.2.15:8081<br>
 Web1 Server IP: 10.0.2.15:8880 對應container 172.18.0.2:80<br>
 Web2 Server IP: 10.0.2.15:8881 對應container 172.18.0.3:80<br>
 
-**問題**：目前遇到的問題是想要在keepalived的虛擬IP改用為10.0.2.15實體，這樣可以讓使用者連進來，目前不知道實體IP是否能取代虛擬IP？
+**問題**：目前遇到的問題是想要在keepalived的虛擬IP改用為10.0.2.15的VM IP，這樣可以讓使用者連進來，目前VM IP不能被連上
 <br><br>
 
 ## 使用VM實體IP當作keepalived的虛擬IP
@@ -223,7 +223,7 @@ upstream test {
 server {
     listen 8080 default_server;
     listen [::]:8080 default_server;
-    
+
     location / {
         add_header Cache-Control "no-store";
         proxy_pass http://test;
@@ -257,7 +257,7 @@ vrrp_instance VI_1 {
         chk_http_port
     }
     virtual_ipaddress {
-        10.0.2.15        #VIP 想要換成 實體IP
+        10.0.2.15        #VIP 換成了 VM IP
     }
 }
 ```
@@ -389,14 +389,14 @@ ip addr
 ```
 cat /etc/nginx/sites-enabled/default
 upstream test {
-    server 172.18.0.2 weight=6;
-    server 172.18.0.3 weight=4;
+    server 172.18.0.2 weight=4;
+    server 172.18.0.3 weight=6;
 }
 
 server {
-    listen 8080 default_server;
-    listen [::]:8080 default_server;
-    
+    listen 8081 default_server;
+    listen [::]:8081 default_server;
+
     location / {
         add_header Cache-Control "no-store";
         proxy_pass http://test;
@@ -431,7 +431,7 @@ vrrp_instance VI_1 {
         chk_http_port
     }
     virtual_ipaddress {
-        10.0.2.15        #VIP 想要換成 實體IP
+        10.0.2.15        #VIP 換成了 VM IP
     }
 }
 ```

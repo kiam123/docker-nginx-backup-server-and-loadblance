@@ -1,0 +1,40 @@
+docker network create --subnet=172.18.0.0/24 test-network
+
+cd base
+docker build --build-arg ssh_port=10000 -t nginx_base .
+cd ..
+cd master
+docker build --build-arg web_port=80 -t nginx_master .
+cd ..
+cd slave
+docker build --build-arg web_port=81 -t nginx_slave .
+cd ..
+cd web
+docker build -t nginx_web .
+cd ..
+docker run -d \
+    --name nginx_master \
+    --net=host \
+    --privileged \
+    nginx_master
+docker run -d \
+    --name nginx_slave \
+    --net=host \
+    --privileged \
+    nginx_slave
+
+docker run -d \
+    -p 8882:80 -p 8024:10000 \
+    --privileged \
+    --name web1 \
+    --net test-network \
+    -e "name=WEB1" \
+    nginx_web
+
+docker run -d \
+    -p 8883:80 -p 8025:10000 \
+    --privileged \
+    --name web2 \
+    --net test-network \
+    -e "name=WEB2" \
+    nginx_web

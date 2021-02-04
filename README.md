@@ -10,23 +10,22 @@ Container作業系統: Ubuntu 18.04.3 LTS<br>
 
 # 使用的工具和設備的資料
 利用Nginx+keepalived實作一台主server，一個備用server和load blancer<br><br>
-<!-- 假設Host主機IP為140.0.0.1<br>
+假設Host主機IP為140.0.0.1<br>
 Host Server IP: 140.0.0.1<br>
 虛擬IP: 172.18.0.15（希望改用實體IP）<br>
 主Server IP: 140.0.0.1:8880 對應container 172.18.0.2:80<br>
 備用Server IP: 140.0.0.1:8881 對應container 172.18.0.3:80<br>
 Web1 Server IP: 140.0.0.1:8882 對應container 172.18.0.4:80<br>
-Web2 Server IP: 140.0.0.1:8883 對應container 172.18.0.5:80<br> -->
+Web2 Server IP: 140.0.0.1:8883 對應container 172.18.0.5:80<br>
 
-
-假設VM (Virtual box) 主機IP為10.0.2.15<br>
+<!-- 假設VM (Virtual box) 主機IP為10.0.2.15<br>
 VM Server IP: 10.0.2.15<br>
 虛擬IP(VIP) : 10.0.2.15（虛擬IP 用VM IP）<br>
 
 主Server IP: 10.0.2.15:8080 對應container 172.18.0.2:80<br>
 備用Server IP: 10.0.2.15:8081 對應container 172.18.0.3:80<br>
 Web1 Server IP: 10.0.2.15:8880 對應container 172.18.0.4:80<br>
-Web2 Server IP: 10.0.2.15:8881 對應container 172.18.0.5:80<br>
+Web2 Server IP: 10.0.2.15:8881 對應container 172.18.0.5:80<br> -->
 
 **問題**：目前遇到的問題是想要在keepalived的虛擬IP改用為140.0.0.1實體，這樣可以讓使用者連進來，目前不知道實體IP是否能取代虛擬IP？
 <br><br>
@@ -36,8 +35,8 @@ Web2 Server IP: 10.0.2.15:8881 對應container 172.18.0.5:80<br>
 <br><br>
 
 ## 創建實體IP的keepalived架構圖（希望成為這樣的架構）
-<img src="image/nginx-back-server-and-loadblance-realip.png" width="100%">
-
+<!-- <img src="image/nginx-back-server-and-loadblance-realip.png" width="100%"> -->
+<img src="image/1. nginx-back-server.png" width="100%">
 
 # Image和網絡環境建立
 ## 創建 base image

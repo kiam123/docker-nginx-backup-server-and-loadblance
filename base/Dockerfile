@@ -1,7 +1,9 @@
 FROM ubuntu:bionic-20191029
 
 ARG web_port=80
+ARG ssh_port=22
 ARG time_zone="Asia/Taipei"
+ARG pwd="123123"
 
 #================================================
 # Customize sources for apt-get
@@ -54,7 +56,7 @@ RUN useradd -ou 0 -g 0 test \
          --shell /bin/bash  \
          --create-home \
   && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
-  && echo 'test:123123' | chpasswd
+  && echo "test:$pwd" | chpasswd
 ENV HOME=/home/test
 
 #=======================================
@@ -86,6 +88,11 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin  yes /' /etc/ss
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
+
+# SSH change port
+RUN sed -i "s/#Port 22/Port $ssh_port/" /etc/ssh/sshd_config
+
+
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
@@ -101,6 +108,6 @@ RUN  mkdir -p /var/run/supervisor /var/log/supervisor \
 
 
 EXPOSE ${web_port}
-
+EXPOSE ${ssh_port}
 
 CMD ["/opt/bin/entry_point.sh"]
